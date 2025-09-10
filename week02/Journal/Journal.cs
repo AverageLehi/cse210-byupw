@@ -1,4 +1,4 @@
-class Journal
+public class Journal
 {
     public List<Entry> _entries = new List<Entry>();
 
@@ -10,7 +10,7 @@ class Journal
     {
         foreach (Entry entry in _entries)
         {
-            Console.WriteLine(entry);
+            entry.Display();
         }
     }
 

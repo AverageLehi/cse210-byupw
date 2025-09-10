@@ -6,6 +6,6 @@ class Entry
 
     public void Display()
     {
-        Console.WriteLine(_entryText);
+        Console.WriteLine($"\n{_date} - {_promptEntry}\n{_entryText}\n");
     }
 }
