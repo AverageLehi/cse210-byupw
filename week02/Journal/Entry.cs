@@ -1,11 +1,11 @@
-class Entry
+public class Entry
 {
-    public string _date = "";
-    public string _promptEntry = "";
-    public string _entryText = "";
+    public string _date;
+    public string _promptEntry;
+    public string _entryText;
 
     public void Display()
     {
-        Console.WriteLine($"\n{_date} - {_promptEntry}\n{_entryText}\n");
+        Console.WriteLine($"\nDate: {_date} - Prompt: {_promptEntry}\n{_entryText}\n");
     }
 }

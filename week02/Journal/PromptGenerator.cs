@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-class PromptGenerator
+public class PromptGenerator
 {
     List<string> _prompts = new List<string>
     {
