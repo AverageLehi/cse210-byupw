@@ -1,3 +1,7 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+
 public class Journal
 {
     public List<Entry> _entries = new List<Entry>();
@@ -8,19 +12,48 @@ public class Journal
     }
     public void DisplayAll()
     {
-        foreach (Entry entry in _entries)
+        if (_entries.Count == 0)
         {
-            entry.Display();
+            Console.WriteLine("No entries are found.\n");
+            return;
         }
+        foreach (Entry entry in _entries)
+            {
+                entry.Display();
+            }
     }
 
-    public string SaveToFile(string fileName)
+    public void LoadFromFile(string fileName)
     {
-        return "";
+        if (!File.Exists(fileName))
+        {
+            Console.WriteLine("File not found.\n");
+            return;
+        }
+        _entries.Clear();
+        string[] lines = File.ReadAllLines(fileName);
+
+        foreach (string line in lines)
+        {
+            Entry entry = Entry.FromFileFormat(line);
+            if (entry != null)
+            {
+                _entries.Add(entry);
+            }
+        }
+        Console.WriteLine("Journal loaded successfully.\n");
+    }
+    public void SaveToFile(string fileName)
+    {
+        using (StreamWriter outputFile = new StreamWriter(fileName))
+        {
+            foreach (Entry e in _entries)
+            {
+                outputFile.WriteLine(e.ToFileFormat());
+            }
+        }
+
     }
 
-    public string LoadFromFile(string fileName)
-    {
-        return "";
-    }
+    
 }
