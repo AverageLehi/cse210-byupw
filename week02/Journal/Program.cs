@@ -1,91 +1,67 @@
 using System;
-using System.IO;
-
 class Program
 {
     static void Main(string[] args)
     {
-        //create object for Journal class outside of loop
         Journal journal = new Journal();
-        //create object for PromptGenerator class outside of loop
-        PromptGenerator prompt = new PromptGenerator();
-   
-        bool valid = true;
+        PromptGenerator promptGen = new PromptGenerator();
 
-        while (valid)
+        bool running = true;
+
+        while (running)
         {
-            Console.Write("""
-        Welcome to the Journal Program! 
-        Please select one of the following choices
-        1. Write
-        2. Display
-        3. Load
-        4. Save
-        5. Quit
-        What would you like to do? 
-        """);
-            string userInput = Console.ReadLine();
-            if (userInput == "1")
-            {
-                //create object for Entry class inside of loop-->creates new entry object every time.
-                Entry entry = new Entry();
+            Console.WriteLine("Journal Menu:");
+            Console.WriteLine("1. Write a new entry");
+            Console.WriteLine("2. Display all entries:");
+            Console.WriteLine("3. Save journal to a file:");
+            Console.WriteLine("4. Load journal from a file:");
+            Console.WriteLine("5. Quit");
+            Console.WriteLine("Choose an option: ");
+            string choice = Console.ReadLine();
+            Console.WriteLine();
 
-                //get random prompt
-                string entryPrompt = prompt.GetRandomPrompt();
-                //display random prompt
-                Console.WriteLine(entryPrompt);
-
-                //get user entry
-                string entryFromUser = Console.ReadLine();
-                //get date
-                string dateEntry = DateTime.Now.ToString("MMMM dd, yyyy");
-
-                //save entryPrompt string to Entry class _promptEntry variable
-                entry._promptEntry = entryPrompt;
-                //save userFromEntry string to Entry class _entryText variable
-                entry._entryText = entryFromUser;
-                //save dateEntry string to Entry class _date variable
-                entry._date = dateEntry;
-
-                //save the prompt of the user to _entryText
-                journal.AddEntry(entry);
-            }
-            else if (userInput == "2")
+            switch (choice)
             {
-                journal.DisplayAll();
-            }
-            else if (userInput == "3")
-            {
-                Console.WriteLine("What is the filename? ");
-                string filename = Console.ReadLine();
-                string[] lines = System.IO.File.ReadAllLines(filename);
-                foreach (string line in lines)
-                {
-                    string[] parts = line.Split("|");
-                    Entry e = new Entry();
-                    e._date = parts[0];
-                    e._promptEntry = parts[1];
-                    e._entryText = parts[2];
-                    journal.AddEntry(e);
-                }
+                case "1":
+                    string prompt = promptGen.GetRandomPrompt();
+                    Console.WriteLine(prompt);
+                    Console.Write("> ");
+                    string response = Console.ReadLine();
 
-            }
-            else if (userInput == "4")
-            {
-                Console.Write("What is the file name: ");
-                string filename = Console.ReadLine();
-                using (StreamWriter outputFile = new StreamWriter(filename))
-                {
-                    foreach(Entry e in journal._entries)
-                    {
-                        outputFile.WriteLine($"{e._date} | {e._promptEntry} | {e._entryText}");
-                    }
-                }
-            }
-            else if (userInput == "5")
-            {
-                valid = false;
-                Console.WriteLine("Thank you for using the Journal Program!");
+                    string date = DateTime.Now.ToShortDateString();
+                    Entry newEntry = new Entry(date, prompt, response);
+                    journal.AddEntry(newEntry);
+                    Console.WriteLine("Entry added successfulyy.\n");
+                    break;
+
+                case "2":
+                    journal.DisplayAll();
+                    break;
+
+                case "3":
+                    Console.WriteLine("Enter filename to save: ");
+                    string saveFile = Console.ReadLine();
+                    journal.SaveToFile(saveFile);
+                    break;
+
+                case "4":
+                    Console.Write("Enter filename to load: ");
+                    string loadFile = Console.ReadLine();
+                    journal.LoadFromFile(loadFile);
+                    break;
+
+                case "5":
+                    running = false;
+                    Console.WriteLine("Goodbye!");
+                    break;
+
+                case "6":
+                    journal.ClearAll();
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid choice. Try again.\n");
+                    break;
             }
         }
     }

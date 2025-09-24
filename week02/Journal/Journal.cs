@@ -22,6 +22,16 @@ public class Journal
                 entry.Display();
             }
     }
+    public void ClearAll()
+    {
+        if (_entries.Count == 0)
+        {
+            Console.WriteLine("Journal is already empty.'\n");
+            return;
+        }
+        _entries.Clear();
+        Console.WriteLine("All entries have been deleted.\n");
+    }
 
     public void LoadFromFile(string fileName)
     {
