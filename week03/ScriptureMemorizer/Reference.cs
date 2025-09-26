@@ -4,13 +4,10 @@ public class Reference
     private int _chapter;
     private int _verseStart;
     private int _verseEnd;
-    public Reference(string book, int chapter, int verse)
-    {
-        _book = book;
-        _chapter = chapter;
-        _verseStart = verse;
-        _verseEnd = verse;
-    }
+    public string GetBook() => _book;
+    public int GetChapter() => _chapter;
+    public int GetVerseStart() => _verseStart;
+    public int GetVerseEnd() => _verseEnd;
     public Reference(string book, int chapter, int verseStart, int verseEnd)
     {
         _book = book;
