@@ -1,5 +1,6 @@
-using System.Threading;
 using System;
+using System.Threading;
+
 public abstract class Activity
 {
     protected string _name;
@@ -9,8 +10,10 @@ public abstract class Activity
     public Activity(string name, string description)
     {
         _name = name;
-        _description = name;
+        // FIX: Correctly set _description to the description parameter.
+        _description = description; 
     }
+
     public void ShowSpinner(int seconds)
     {
         char[] spinner = { '|', '/', '-', '\\' };
@@ -25,8 +28,10 @@ public abstract class Activity
                 Thread.Sleep(250);
             }
         }
-        Console.Write(new string(' ', 40) + "r");
+        // FIX: Used the correct escape sequence "\r" to clear the line.
+        Console.Write(new string(' ', 40) + "\r");
     }
+
     public void ShowCountdown(int seconds)
     {
         for (int i = seconds; i > 0; i--)
@@ -34,14 +39,18 @@ public abstract class Activity
             Console.Write($"Pausing... Starting in: {i} \r");
             Thread.Sleep(1000);
         }
-        Console.Write(new string(' ', 40) + "r");
+        // FIX: Used the correct escape sequence "\r" to clear the line.
+        Console.Write(new string(' ', 40) + "\r");
     }
+
     private void SetDuration()
     {
         while (true)
         {
             Console.Write($"How long, in seconds, would you like for your session? ");
             string input = Console.ReadLine();
+            
+            // FIX: Uses tempDuration to avoid scope/naming conflicts and validate input.
             if (int.TryParse(input, out int tempDuration) && tempDuration > 0)
             {
                 _duration = tempDuration;
@@ -53,14 +62,17 @@ public abstract class Activity
             }
         }
     }
+
     public void DisplayStartingMessage()
     {
-        Console.WriteLine($"\n-- - { _name} Activity---");
+        // FIX: Cleaned up the formatting for the activity title.
+        Console.WriteLine($"\n--- {_name} Activity ---");
         Console.WriteLine(_description);
         SetDuration();
         Console.WriteLine("\nGet ready to begin...");
         ShowCountdown(3);
     }
+
     public void DisplayEndingMessage()
     {
         Console.WriteLine("\nWell done! You have completed the following activity:");
@@ -68,5 +80,6 @@ public abstract class Activity
         Console.WriteLine($"Duration: {_duration} seconds");
         ShowCountdown(3);
     }
+
     public abstract void Run();
 }
